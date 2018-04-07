@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Input: <text>
+# Output: <word><tab><1>
+
+# Artificial latency, random between 1 - 3 seconds
+# If developing locally on Mac, use gshuf instead of shuf
+# Refer to this for more info: https://apple.stackexchange.com/questions/142860/install-shuf-on-os-x
+
+SHUF = shuf
+# If shuf is not found on this computer then use gshuf (for OSX)
+if ! type shuf 2> /dev/null; then
+  SHUF=gshuf
+fi
+
+SLEEP_TIME=`$SHUF -i 1-4 -n 1`
+sleep $SLEEP_TIME
+
+cat | tr '[ \t]' '\n' | tr '[:upper:]' '[:lower:]' | awk NF | awk '{print $1"\t1"}'
